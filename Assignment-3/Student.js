@@ -37,9 +37,9 @@ class Student {
   ) {
     const fullName = firstName + lastName;
     let age = new Date().getFullYear() - DOB.split("/")[2];
-    const finalCGPA = Student.finalCGPACalculate(semesterCGPA);
-    let semesterGrade = Student.findSemesterGrade(semesterCGPA);
-    let finalGrade = Student.findFinalGrade(finalCGPA);
+    const finalCGPA = Student.#finalCGPACalculate(semesterCGPA);
+    let semesterGrade = Student.#findSemesterGrade(semesterCGPA);
+    let finalGrade = Student.#findFinalGrade(finalCGPA);
     let numberOfYearsToGraduate = yearOfPassing - yearOfEnrollment;
 
     let tempStudent = new Student(
@@ -58,14 +58,14 @@ class Student {
     );
     return tempStudent;
   }
-  static finalCGPACalculate(semesterCGPA) {
+  static #finalCGPACalculate(semesterCGPA) {
     let tempSemesterCGPA = 0;
     for (let i = 0; i < semesterCGPA.length; i++) {
       tempSemesterCGPA += semesterCGPA[i];
     }
     return tempSemesterCGPA / 8;
   }
-  static findSemesterGrade(semesterCGPA) {
+  static #findSemesterGrade(semesterCGPA) {
     let tempSemesterGrade = [];
     for (let i = 0; i < semesterCGPA.length; i++) {
       if (semesterCGPA[i] >= 9) {
@@ -82,7 +82,7 @@ class Student {
     }
     return tempSemesterGrade;
   }
-  static findFinalGrade(finalCGPA) {
+  static #findFinalGrade(finalCGPA) {
     let tempFinalGrade = "";
     if (finalCGPA >= 9) {
       tempFinalGrade = "A";
@@ -123,14 +123,14 @@ class Student {
     this.updatesemesterGrade(newSemCGPAArray);
   }
   updatefinalCGPA(newSemCGPAArray) {
-    this.finalCGPA = Student.finalCGPACalculate(newSemCGPAArray);
+    this.finalCGPA = Student.#finalCGPACalculate(newSemCGPAArray);
     this.updateFinalGrade(this.finalCGPA);
   }
   updatesemesterGrade(newSemCGPAArray) {
-    this.semesterGrade = Student.findSemesterGrade(newSemCGPAArray);
+    this.semesterGrade = Student.#findSemesterGrade(newSemCGPAArray);
   }
   updateFinalGrade(newFinalCGPA) {
-    this.finalGrade = Student.findFinalGrade(newFinalCGPA);
+    this.finalGrade = Student.#findFinalGrade(newFinalCGPA);
   }
   updateYearOfEnrollment(newYearOfEnrollment) {
     this.yearOfEnrollment = newYearOfEnrollment;
@@ -259,12 +259,12 @@ const s1 = Student.createStudent(
 );
 console.log(s1);
 
-// s1.update("firstname", "Arjun");
-// s1.update("lastname", "naik");
-// s1.update("fullname", "Druva Alur");
-// s1.update("DOB", "12/03/2000");
-// s1.update("semestercgpa", [9, 9, 8, 8, 7, 7, 6, 4]);
-// s1.update("yearofenrollment", 2020);
-// s1.update("yearofpassing", 2024);
-// s1.display("firstname");
-// console.log(s1.getproperty("firstname"));
+s1.update("firstname", "Arjun");
+s1.update("lastname", "naik");
+s1.update("fullname", "Druva Alur");
+s1.update("DOB", "12/03/2000");
+s1.update("semestercgpa", [9, 9, 8, 8, 7, 7, 6, 4]);
+s1.update("yearofenrollment", 2020);
+s1.update("yearofpassing", 2024);
+s1.display("firstname");
+console.log(s1.getproperty("firstname"));
