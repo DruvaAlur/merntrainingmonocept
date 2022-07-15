@@ -25,12 +25,17 @@ class User {
   }
 
   displayContact() {
+    let tempcontacts = [];
     for (let i = 0; i < this.contacts.length; i++)
-      if (this.contacts[i].isActive) console.log(this.contacts[i]);
+      if (this.contacts[i].isActive) tempcontacts.push(this.contacts[i]);
+
+    console.log(tempcontacts);
   }
   displayUsers() {
+    let tempusers = [];
     for (let i = 0; i < User.allUsers.length; i++)
-      if (User.allUsers[i].isActive) console.log(User.allUsers[i]);
+      if (User.allUsers[i].isActive) tempusers.push(User.allUsers[i]);
+    console.log(tempusers);
   }
   deleteContact(contactfname, contactlname) {
     let [indexofcontact, isContactActive, isContactExists] =
@@ -137,6 +142,7 @@ druva.createContactDetail("pavan", "aloor", "email", "druva.alur@gmail.com");
 
 druva.createContact("arjun", "naik");
 druva.displayContact();
-druva.deleteContact("pavan", "aloor");
+// druva.deleteContact("pavan", "aloor");
+
 druva.displayContact();
 // druva.deleteContact("pavan", "aloor");
