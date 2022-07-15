@@ -22,31 +22,6 @@ class User {
     let newcontact = new Contact(fname, lname);
 
     this.contacts.push(newcontact);
-    // this.createContactDetail(type, role);
-    return newcontact;
-  }
-  createContactDetail(fname, lname, type, value) {
-    let [indexofcontact, isContactExists] = this.isContactExists(fname, lname);
-    if (!isContactExists) {
-      console.log("Contact doesnt exists");
-      return;
-    }
-    let newContactDetail = new ContactDetail(type, value);
-    // console.log(newContactDetail);
-    this.contacts[indexofcontact].contactDetails.push(newContactDetail);
-    return newContactDetail;
-  }
-  isContactExists(fname, lname) {
-    for (let i = 0; i < this.contacts.length; i++) {
-      if (
-        fname === this.contacts[i].fname &&
-        lname === this.contacts[i].lname
-      ) {
-        return [i, true];
-      }
-    }
-    console.log("contact does not exists");
-    return [null, false];
   }
 
   displayContact() {
@@ -58,15 +33,31 @@ class User {
       if (User.allUsers[i].isActive) console.log(User.allUsers[i]);
   }
   deleteContact(contactfname, contactlname) {
-    let [indexofcontact, isContactExists] = this.isContactExists(
-      contactfname,
-      contactlname
-    );
+    let [indexofcontact, isContactActive, isContactExists] =
+      this.isContactExists(contactfname, contactlname);
     if (!isContactExists) {
-      console.log("contact doesnt exists");
+      console.log("contact does not exists");
+      return;
+    }
+    if (!isContactActive) {
+      console.log("contact is not active");
       return;
     }
     this.contacts[indexofcontact].isActive = false;
+  }
+  createContactDetail(fname, lname, type, value) {
+    let [indexofcontact, isContactActive, isContactExists] =
+      this.isContactExists(fname, lname);
+    if (!isContactExists) {
+      console.log("Contact doesnt exists");
+      return;
+    }
+    if (!isContactActive) {
+      console.log("contact is not active");
+      return;
+    }
+    let newContactDetail = Contact.createContactDetail(type, value);
+    this.contacts[indexofcontact].contactDetails.push(newContactDetail);
   }
   isUserExists(fname, lname) {
     for (let i = 0; i < User.allUsers.length; i++) {
@@ -76,22 +67,41 @@ class User {
         fname === User.allUsers[i].fname &&
         lname === User.allUsers[i].lname
       ) {
-        return [i, true];
+        return [i, this.isActive, true];
       }
     }
-    return [null, false];
+    return [null, false, false];
   }
 
   deleteUser(fname, lname) {
     if (this.role == "admin") {
-      let [indexofUser, isUserExists] = this.isUserExists(fname, lname);
+      let [indexofUser, isUserActive, isUserExists] = this.isUserExists(
+        fname,
+        lname
+      );
       if (!isUserExists) {
         console.log("User doesnt exists");
+        return;
+      }
+      if (!isUserActive) {
+        console.log("User is not active");
         return;
       }
       User.allUsers[indexofUser].isActive = false;
     }
     console.log("only admin can delete users");
+  }
+  isContactExists(fname, lname) {
+    for (let i = 0; i < this.contacts.length; i++) {
+      if (
+        fname === this.contacts[i].fname &&
+        lname === this.contacts[i].lname
+      ) {
+        return [i, this.contacts[i].isActive, true];
+      }
+    }
+
+    return [null, false, false];
   }
 }
 class Contact {
@@ -100,6 +110,12 @@ class Contact {
     this.lname = lname;
     this.isActive = true;
     this.contactDetails = [];
+  }
+  static createContactDetail(type, value) {
+    let newContactDetail = new ContactDetail(type, value);
+    // console.log(newContactDetail);
+
+    return newContactDetail;
   }
 }
 class ContactDetail {
@@ -113,13 +129,14 @@ let druva = new User("druva", "alur", "admin");
 User.allUsers.push(druva);
 let pavan = druva.createUser("pavan", "aloor", "user");
 
-pavan.createContact("pavan", "aloor");
-
-pavan.displayContact();
 druva.createContact("pavan", "aloor");
+
+pavan.createContact("arjun", "naik");
 
 druva.createContactDetail("pavan", "aloor", "email", "druva.alur@gmail.com");
 
+druva.createContact("arjun", "naik");
 druva.displayContact();
-druva.displayUsers();
-pavan.deleteContact("pavan", "aloor");
+druva.deleteContact("pavan", "aloor");
+druva.displayContact();
+// druva.deleteContact("pavan", "aloor");
